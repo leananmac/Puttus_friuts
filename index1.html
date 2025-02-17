@@ -1,0 +1,4276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Fruits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        /* Base styles and animations */
+        .product-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        .header-text {
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .product-card {
+                margin: 1rem 0;
+            }
+            .header-text {
+                font-size: 2rem;
+            }
+        }
+
+        /* Interactive elements */
+        .btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Loading animations */
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Navigation menu animations */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #16a34a;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Video slider styles */
+        .video-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .video-slide.hidden {
+            display: none;
+        }
+        .video-slide.active {
+            display: block;
+        }
+
+        /* About Section with Gradient */
+        .bg {
+            background: linear-gradient(to bottom, #ffffff, #d3d3d3);
+        }/* Add to your existing style section */
+.bg-gradient-to-b {
+    background-size: 100% 100%;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+}
+
+        /* Add to your existing styles */
+        @media (max-width: 768px) {
+            .container .flex {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .container .space-x-4 > * + * {
+                margin-left: 0.5rem;
+            }
+            
+            .container .text-sm {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Add to your existing styles */
+        .social-hover {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-hover::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #16a34a; /* green-600 */
+            transition: width 0.3s ease;
+        }
+        
+        .social-hover:hover::after {
+            width: 100%;
+        }
+
+        /* Custom breakpoints */
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            .text-xl {
+                font-size: 1.1rem !important;
+            }
+        }
+
+        /* Ensure smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #16a34a;
+            border-radius: 4px;
+        }
+
+        /* Debug styles */
+        #cart-overlay {
+            z-index: 40 !important;
+        }
+        #shopping-cart {
+            z-index: 50 !important;
+        }
+        .fixed {
+            position: fixed !important;
+        }
+        
+        /* Debug outlines */
+        .debug * {
+            outline: 1px solid red;
+        }
+        
+        /* Debug mobile responsiveness */
+        @media (max-width: 768px) {
+            #shopping-cart {
+                width: 100% !important;
+            }
+            .debug-mobile {
+                border: 2px solid blue;
+            }
+        }@media (max-width: 640px) {
+            .social-icons {
+                display: flex;
+                justify-content: center;
+                gap: 10px; /* Adjust spacing as needed */
+            }
+        }
+
+        /* Mobile Menu and Social Icons Optimization */
+        @media (max-width: 640px) {
+            /* Social icons in horizontal row */
+            .social-icons {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            /* Compact mobile menu */
+            #mobile-menu {
+                padding: 0.5rem;
+            }
+            
+            #mobile-menu a {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Smaller mobile menu button */
+            #mobile-menu-button {
+                padding: 0.25rem;
+            }
+            
+            /* Adjust spacing in topbar */
+            .container .flex {
+                gap: 0.5rem;
+            }
+            
+            /* Make contact info more compact */
+            .contact-info a {
+                font-size: 0.8rem;
+                padding: 0.25rem;
+            }
+        }
+
+        /* Desktop styles remain unchanged */
+        @media (min-width: 641px) {
+            .social-icons {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            /* Social icons in horizontal row */
+            .social-icons-mobile {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+                padding: 0.5rem 0;
+            }
+            
+            /* Compact mobile menu */
+            #mobile-menu {
+                padding: 0.5rem;
+            }
+            
+            #mobile-menu a {
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+                text-align: center;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            
+            #mobile-menu a:last-child {
+                border-bottom: none;
+            }
+            
+            /* Smaller mobile menu button */
+            #mobile-menu-button {
+                padding: 0.5rem;
+                margin-left: 0.5rem;
+            }
+            
+            /* Adjust logo and brand name */
+            .logo-container {
+                gap: 0.5rem;
+            }
+            
+            /* Make sign up button smaller on mobile */
+            .sign-up-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Preloader styles */
+        #preloader {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        .loader-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .fruit-loader {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #16a34a;
+            border-bottom-color: #16a34a;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .leaves span {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #16a34a;
+            border-radius: 50% 0;
+            transform-origin: 100% 100%;
+        }
+
+        .leaves span:nth-child(1) {
+            top: 0;
+            left: 50%;
+            transform: rotate(-45deg);
+            animation: leafWave 1s ease-in-out infinite;
+        }
+
+        .leaves span:nth-child(2) {
+            top: 25%;
+            left: 75%;
+            transform: rotate(15deg);
+            animation: leafWave 1s ease-in-out infinite 0.2s;
+        }
+
+        .leaves span:nth-child(3) {
+            top: 25%;
+            left: 25%;
+            transform: rotate(-90deg);
+            animation: leafWave 1s ease-in-out infinite 0.4s;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes leafWave {
+            0%, 100% { transform: rotate(var(--rotate)) scale(1); }
+            50% { transform: rotate(calc(var(--rotate) + 15deg)) scale(1.1); }
+        }
+
+        #countdown {
+            font-family: 'Arial', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Core responsive utilities */
+        @media (max-width: 640px) {
+            /* Navigation and header */
+            .nav-container {
+                padding: 0.5rem;
+            }
+            
+            .logo-text {
+                font-size: 1.25rem;
+            }
+            
+            .mobile-menu-container {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 40;
+            }
+
+            /* Hero section */
+            .hero-content {
+                padding: 2rem 1rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+
+            /* Products grid */
+            .products-grid {
+                grid-template-columns: repeat(1, 1fr);
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            /* Cart adjustments */
+            #shopping-cart {
+                width: 100% !important;
+                max-width: none;
+            }
+
+            /* Footer adjustments */
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+        }
+
+        /* Tablet responsive design */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            #shopping-cart {
+                width: 400px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) {
+            .nav-link {
+                padding: 0.75rem 1rem;
+            }
+
+            button, 
+            a {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+
+        /* Prevent content shift when modal opens */
+        body.modal-open {
+            overflow: hidden;
+            padding-right: var(--scrollbar-width, 0px);
+        }
+
+        /* Improved modal responsiveness */
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            margin: 2rem auto;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .events-arrivals-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative Elements */
+        .events-arrivals-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 0% 0%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 100% 100%, rgba(76, 175, 80, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #4CAF50, #45a049);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Events Column Styles */
+        .events-column {
+            position: relative;
+        }
+
+        .column-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 40px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .column-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 25px;
+            background: #4CAF50;
+            border-radius: 2px;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .event-card {
+            display: flex;
+            gap: 25px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .event-card:hover::before {
+            opacity: 1;
+        }
+
+        .event-icon {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover .event-icon {
+            transform: rotate(360deg);
+        }
+
+        .event-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .event-details {
+            flex: 1;
+        }
+
+        .event-details h4 {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .event-card:hover .event-details h4 {
+            color: #4CAF50;
+        }
+
+        .event-details p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .event-date {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4CAF50;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* New Arrivals Styles */
+        .arrivals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .arrival-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .arrival-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .arrival-image {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+        }
+
+        .arrival-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .arrival-card:hover .arrival-image img {
+            transform: scale(1.15);
+        }
+
+        .arrival-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(to top, 
+                rgba(0,0,0,0.9) 0%,
+                rgba(0,0,0,0.7) 50%,
+                transparent 100%);
+            color: white;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .arrival-card:hover .arrival-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .arrival-overlay h4 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+
+        .arrival-overlay p {
+            font-size: 1rem;
+            opacity: 0.9;
+            transform: translateY(20px);
+            transition: transform 0.5s ease 0.1s;
+        }
+
+        .arrival-card:hover .arrival-overlay h4,
+        .arrival-card:hover .arrival-overlay p {
+            transform: translateY(0);
+        }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .content-grid {
+                gap: 40px;
+            }
+            
+            .arrival-image {
+                height: 240px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                max-width: 700px;
+            }
+            
+            .arrivals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .events-arrivals-section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .event-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 25px;
+            }
+            
+            .event-icon {
+                margin-bottom: 20px;
+            }
+            
+            .arrival-image {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .arrivals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .arrival-image {
+                height: 250px;
+            }
+            
+            .event-details h4 {
+                font-size: 1.2rem;
+            }
+            
+            .event-details p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Mobile-first responsive design */
+        @media (max-width: 768px) {
+            /* Collapsible sections */
+            .section-collapse {
+                border-bottom: 1px solid #e5e7eb;
+                margin-bottom: 1rem;
+            }
+
+            .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                cursor: pointer;
+                background: #f9fafb;
+            }
+
+            .section-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+
+            .section-content.expanded {
+                max-height: 2000px;
+                transition: max-height 0.5s ease-in;
+            }
+
+            /* Card layouts */
+            .product-card {
+                display: grid;
+                grid-template-columns: 80px 1fr;
+                gap: 1rem;
+                padding: 1rem;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .product-image {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 0.5rem;
+            }
+
+            .product-details {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            /* Navigation drawer */
+            .mobile-drawer {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                width: 80%;
+                height: 100%;
+                background: white;
+                transition: left 0.3s ease;
+                z-index: 50;
+                box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            }
+
+            .mobile-drawer.open {
+                left: 0;
+            }
+
+            /* Bottom navigation bar */
+            .bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                display: flex;
+                justify-content: space-around;
+                padding: 0.75rem;
+                box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+                z-index: 40;
+            }
+
+            .bottom-nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #4b5563;
+                font-size: 0.75rem;
+            }
+
+            .bottom-nav-item i {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+
+            /* Floating action button */
+            .fab-button {
+                position: fixed;
+                bottom: 5rem;
+                right: 1rem;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: #16a34a;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 45;
+            }
+        }
+
+        /* Bottom navigation adjustments */
+        .bottom-nav {
+            padding: 0.5rem; /* Reduced padding */
+        }
+
+        .bottom-nav-item {
+            font-size: 0.7rem; /* Smaller text */
+        }
+
+        .bottom-nav-item i {
+            font-size: 1rem; /* Smaller icons */
+            margin-bottom: 0.15rem; /* Reduced spacing */
+        }
+
+        @media (min-width: 640px) {
+            .bottom-nav-item {
+                font-size: 0.75rem;
+            }
+
+            .bottom-nav-item i {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .product-item {
+                padding: 1rem; /* Adjust padding for mobile */
+            }
+            .product-image {
+                height: 200px; /* Adjust image height for mobile */
+            }
+        }
+
+        /* Adjust image size for mobile */
+        @media (max-width: 640px) {
+            .product-image {
+                width: 100%; /* Ensure the image takes full width */
+                height: auto; /* Maintain aspect ratio */
+            }
+            .product-card {
+                /* You can adjust the card size here if needed */
+                padding: 1rem; /* Adjust padding if necessary */
+            }
+        }
+
+        .rotate-180 {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+         /* General styles for cart items */
+         #cart-items {
+            padding: 1rem; /* Add some padding */
+        }
+
+        /* Ensure cart items maintain the same layout on mobile */
+        .cart-item {
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space between items */
+            border-bottom: 1px solid #e5e7eb; /* Add a bottom border for separation */
+            padding: 1rem 0; /* Padding for each item */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 640px) {
+            #cart-items {
+                padding: 0.5rem; /* Maintain padding on mobile */
+            }
+
+            .cart-item {
+                flex-direction: row; /* Keep items in a row */
+                align-items: center; /* Center items vertically */
+            }
+
+            .cart-item img {
+                width: 60px; /* Adjust image size for mobile */
+                height: 60px; /* Maintain aspect ratio */
+            }
+
+            .cart-item h3 {
+                font-size: 1rem; /* Adjust font size for mobile */
+            }
+
+            .cart-item .flex {
+                flex-direction: row; /* Keep buttons in a row */
+                align-items: center; /* Center align buttons */
+            }
+
+            .cart-item .flex span {
+                margin: 0 0.5rem; /* Add some margin between elements */
+            }
+        }
+
+        button {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+        }
+
+          /* Shopping Cart Styles */
+          #shopping-cart {
+            background-color: #f9f9f9; /* Light background for the cart */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            padding: 20px; /* Padding for the cart */
+            max-width: 400px; /* Max width for the cart */
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
+
+        /* Cart Item Styles */
+        .cart-item {
+            display: flex; /* Flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space between items */
+            border-bottom: 1px solid #e5e7eb; /* Bottom border for separation */
+            padding: 15px 0; /* Padding for each item */
+        }
+
+        .cart-item img {
+            width: 60px; /* Adjust image size */
+            height: 60px; /* Maintain aspect ratio */
+            border-radius: 5px; /* Rounded corners for images */
+        }
+
+        .cart-item h3 {
+            font-size: 1.1rem; /* Adjust font size */
+            color: #333; /* Darker text color */
+            margin: 0; /* Remove default margin */
+        }
+
+        .cart-item .price {
+            font-size: 1rem; /* Font size for price */
+            color: #28a745; /* Green color for price */
+            font-weight: bold; /* Bold text */
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #28a745; /* Green background */
+            color: white; /* White text */
+            padding: 8px 12px; /* Padding for button */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: translateY(-2px); /* Lift effect on hover */
+        }
+
+        /* Subtotal Styles */
+        #cart-subtotal {
+            font-size: 1.2rem; /* Larger font size for subtotal */
+            font-weight: bold; /* Bold text */
+            margin-top: 20px; /* Margin for spacing */
+            color: #333; /* Darker text color */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 640px) {
+            #shopping-cart {
+                width: 100%; /* Full width on small screens */
+                padding: 15px; /* Adjust padding */
+            }
+
+            .cart-item {
+                flex-direction: column; /* Stack items vertically */
+                align-items: flex-start; /* Align items to the start */
+            }
+
+            .cart-item img {
+                margin-bottom: 10px; /* Margin for spacing */
+            }
+        }
+    </style>
+     <!-- Firebase SDKs -->
+     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+     <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB4H41wvASQmUSnkEOlfuX4TcWuX6jxjBQ",
+            authDomain: "macz-login-page.firebaseapp.com",
+            projectId: "macz-login-page",
+            storageBucket: "macz-login-page.firebasestorage.app",
+            messagingSenderId: "1057956446263",
+            appId: "1:1057956446263:web:16adb7159798581e7bffb2",
+            measurementId: "G-3L081RV831"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics(app);
+        const auth = firebase.auth(app);
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        const db = firebase.firestore(app);
+
+        // Make auth and provider globally available
+        window.auth = auth;
+        window.googleProvider = googleProvider;
+        window.microsoftProvider = microsoftProvider;
+        window.signInWithPopup = firebase.auth.signInWithPopup;
+        window.db = db;
+
+        console.log('Firebase initialized successfully');
+    </script>
+</head>
+<body class="bg-gray-50">
+      <!-- Preloader -->
+      <div id="preloader" class="fixed inset-0 flex flex-col items-center justify-center z-50 bg-w">
+        <div id="loop" class="center"></div>
+        <div id="friut-wrapper" class="center">
+            <div id="fruit" class="centerfriut"></div>
+        </div>
+        <div id="countdown" class="text-4xl font-bold text-green-500 mt-4 animate-pulse"></div>
+       
+    </div>
+    
+    <style>
+        /* Preloader styles */
+        #preloader {
+            background: rgb(255, 255, 255); /* Match the website's background */
+        }
+    
+        .centerfriut {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: 26px;
+            margin-left: -12px;
+        }
+    
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -50px;
+            margin-left: -50px;
+        }
+    
+        #loop {
+            height: 100px;
+            width: 100px;
+            border: #33bb27 solid 4px; /* Loop color */
+            border-radius: 200px;
+        }
+    
+        #loop:before {
+            background: linear-gradient(to left, rgba(187, 95, 39, 0) 0%, rgb(39, 187, 71) 30%, rgb(39, 187, 101) 70%, rgba(187, 95, 39, 0) 100%);
+            content: "";
+            display: block;
+            height: 4px;
+            left: -100px;
+            position: relative;
+            top: 100px;
+            width: 300px;
+        }
+    
+        #friut-wrapper {
+            height: 108px;
+            width: 108px;
+            animation: drive 3s linear infinite;
+        }
+    
+        #fruit {
+            height: 34px;
+            width: 35px;
+            background-image: url("./images/pngwing.com\ \(2\).png");
+            background-size: contain; /* Ensure the bike image fits well */
+            background-repeat: no-repeat; /* Prevent image repetition */
+        }
+    
+        @keyframes drive {
+            0% {
+                margin-left: -364px;
+                opacity: 0;
+            }
+            33.33% {
+                transform: rotate(0deg);
+                margin-left: -50px;
+                opacity: 1;
+            }
+            66.66% {
+                transform: rotate(-360deg);
+                margin-left: -50px;
+                opacity: 1;
+            }
+            100% {
+                margin-left: 264px;
+                transform: rotate(-360deg);
+                opacity: 0;
+            }
+        }
+    
+        
+    </style>
+    <!-- End of Preloader -->
+
+    <!-- Topbar with Social Media Icons -->
+    <div class="bg-green-600 text-white py-2"> <!-- Decreased padding from py-4 to py-2 -->
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+                <!-- Contact Info -->
+                <div class="hidden sm:flex flex-wrap items-center justify-center sm:justify-start gap-4">
+                    <a href="tel:+256759899923" class="flex items-center hover:text-green-200 transition duration-300 text-sm sm:text-base"> <!-- Decreased text size -->
+                        <i class="fas fa-phone-alt mr-2"></i>
+                        <span class="hidden sm:inline">+256 759 899 923</span>
+                    </a>
+                    <a href="mailto:kimisma@gmail.com" class="flex items-center hover:text-green-200 transition duration-300 text-sm sm:text-base"> <!-- Decreased text size -->
+                        <i class="fas fa-envelope mr-2"></i>
+                        <span class="hidden sm:inline">kimisma@gmail.com</span>
+                    </a>
+                </div>
+
+                <!-- Update the social media icons section -->
+                <div class="flex items-center gap-2"> <!-- Decreased gap from gap-4 to gap-2 -->
+                    <!-- Social Icons - Hidden on mobile, visible on sm and up -->
+                    <div class="hidden sm:flex items-center space-x-2"> 
+                        <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110 p-1"> 
+                            <i class="fab fa-facebook-f text-base"></i> 
+                        </a>
+                        <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110 p-1">
+                            <i class="fab fa-twitter text-base"></i> 
+                        </a>
+                        <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110 p-1">
+                            <i class="fab fa-instagram text-base"></i> 
+                        </a>
+                        <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110 p-1">
+                            <i class="fab fa-whatsapp text-base"></i> 
+                        </a>
+                    </div>
+                    
+                    <!-- Opening Hours - Hidden on mobile -->
+                    <span class="flex items-center border-l border-green-400 pl-4 whitespace-nowrap">
+                        <i class="far fa-clock mr-2"></i>
+                        <span class="text-sm">Mon - Sat: 8:00 AM - 8:00 PM</span> <!-- Decreased text size -->
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add this style to your existing styles -->
+    <style>
+        /* Ensure social icons stay horizontal and centered on mobile */
+        @media (max-width: 640px) {
+            .social-icons {
+                display: flex !important;
+                justify-content: center !important;
+                width: 100%;
+                padding: 0.5rem 0;
+            }
+            
+            /* Increase tap target size on mobile */
+            .social-icons a {
+                padding: 8px;
+                min-width: 44px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* Adjust icon size on mobile */
+            .social-icons i {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+
+    <!-- Hero Section -->
+    <section  id="Hero"  class="relative min-h-[50vh]">
+        <div class="absolute inset-0">
+            <!-- Video Slider -->
+            <div class="video-slider relative w-full h-full">
+                <video class="w-full h-full object-cover video-slide active" autoplay muted loop>
+                    <source src="./images/2351184-hd_1920_1080_25fps.mp4" type="video/mp4">
+                </video>
+                <video class="w-full h-full object-cover video-slide hidden" autoplay muted loop>
+                    <source src="./images/3601124-hd_1920_1080_30fps.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            
+        </div>
+        <div class="relative flex items-center justify-center h-full pt-32 pb-20">
+            <div class="text-center" data-aos="fade-up">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Fresh & Organic</h1>
+                <p class="text-xl md:text-2xl text-white mb-8">Fruits and Vegetables Delivered to Your Doorstep</p>
+                <a href="#products" class="hero-button bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 transition duration-300">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-2 sm:py-4"> 
+                <div class="flex items-center space-x-4 sm:space-x-8">
+                    <img src="./images/pngwing.com (5).png" alt="AJ Logo" class="h-10 w-10 sm:h-16 sm:w-16">
+                    <span class="text-lg sm:text-2xl font-bold text-green-600">AJ Fresh Fruits</span>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden flex items-center">
+                    <i class="fas fa-bars text-gray-600"></i> <!-- Hamburger icon -->
+                </button>
+
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#Hero" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">Home</a>
+                    <a href="#Products" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">Products</a>
+                    <a href="#about" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">About</a>
+                    <a href="#Footer" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">Contact</a>
+                </div>
+            <button id="signup-button" type="button" class="hidden md:block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                Sign Up
+            </button>
+            </div>
+
+            <!-- Collapsible Mobile Menu -->
+            <div id="mobile-menu" class="hidden flex-col items-center space-y-2 mt-2 md:hidden">
+                <a href="#Hero" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">Home</a>
+                <a href="#Products" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">Products</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">About</a>
+                <a href="#Footer" class="nav-link text-gray-600 hover:text-green-600 transition duration-300">Contact</a>
+                <button id="signup-button" type="button" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300 text-sm">
+                    Sign Up
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Section with Gradient -->
+    <section class="relative bg-gradient-to-b from-white to-green-50 py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <!-- Left Content -->
+                <div class="w-full md:w-1/2 pr-8 mb-8 md:mb-0" data-aos="fade-right">
+                    <h2 class="text-5xl md:text-7xl font-bold text-black mb-6" data-aos="fade-up" data-aos-delay="200">Fresh & Healthy</h2>
+                    <p class="text-xl md:text-2xl text-black mb-4" data-aos="fade-up" data-aos-delay="400">
+                        Welcome to AJ Fruits and Vegetables Supply, your destination for premium organic produce. We believe in delivering nature's 
+                        best directly to your doorstep.
+                    </p>
+                    <p class="text-xl md:text-2xl text-black mb-8" data-aos="fade-up" data-aos-delay="600">
+                        Our carefully selected fruits and vegetables are sourced from local farmers who share our commitment 
+                        to quality and sustainability.
+                    </p>
+                    <div class="flex space-x-4" data-aos="fade-up" data-aos-delay="800">
+                        <div class="flex items-center">
+                            <i class="fas fa-leaf text-green-600 text-3xl mr-2"></i>
+                            <span class="text-black text-xl">100% Organic</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-truck text-green-600 text-3xl mr-2"></i>
+                            <span class="text-black text-xl">Fast Delivery</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Image -->
+                <div class="w-full md:w-1/2" data-aos="fade-left" data-aos-delay="400">
+                    <img 
+                        src="./images/pngwing.com (2).png" 
+                        alt="Fresh Produce" 
+                        class="w-full h-auto max-w-lg mx-auto transform hover:scale-105 transition-transform duration-300"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional Decorative Elements -->
+        <div class="absolute bottom-0 left-0 w-24 h-24 opacity-10">
+            <i class="fas fa-leaf text-green-600 text-6xl"></i>
+        </div>
+        <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
+            <i class="fas fa-apple-alt text-green-600 text-6xl"></i>
+        </div>
+    </section>
+    <!-- Products Section -->
+    <section   id="Products"  class="bg-white py-20">
+        <div class="container mx-auto px-4">
+            <!-- Section Header -->
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-5xl font-bold text-black mb-4">Our Fresh Products</h2>
+                <p class="text-xl text-gray-600">Discover our selection of fresh fruits and vegetables</p>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product Card 1 - Green Pepper -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-4 transition-transform duration-300 hover:scale-105" 
+                     data-id="1" 
+                     data-name="Fresh Green Pepper" 
+                     data-price="10000" 
+                     data-description="Handpicked seasonal fruits from local farms"
+                     data-image="./images/GreenPepper.jpg">
+                    <div class="product-image relative">
+                        <img src="./images/GreenPepper.jpg" alt="Fresh Green Pepper" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -10%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-black mb-2">Fresh Green Pepper</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(4.5)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4 text-sm md:text-base">Handpicked seasonal fruits from local farms</p>
+                    <div class="product-price mb-4 flex flex-col md:flex-row items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 11000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-1">UGX 6000</span>
+                        </div>
+                        <div class="unit-selector mt-2 md:mt-0 md:ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector" onchange="updatePrice()">
+                                <option value="kg">per kg</option>
+                                <option value="g">per 100g</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 - Okra -->
+               <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="2" 
+                     data-name="Fresh Okra" 
+                     data-price="10000" 
+                     data-description="Organic vegetables for your healthy lifestyle"
+                     data-image="./images/Okra.jpg">
+                    <div class="product-image relative">
+                        <img src="./images/Okra.jpg" alt="Fresh Okra" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -10%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Fresh Okra</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(5.0)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Organic vegetables for your healthy lifestyle</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 11000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-2">UGX 10000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-2">
+                                <option value="kg">per kg</option>
+                                <option value="g">per 100g</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 - Organic Basket -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="3" 
+                     data-name="Organic Basket" 
+                     data-price="60000" 
+                     data-description="Curated selection of seasonal produce"
+                     data-image="./images/pexels-tara-clark-89384110-9070106.jpg">
+                    <div class="product-image relative">
+                        <img src="./images/pexels-tara-clark-89384110-9070106.jpg" alt="Organic Basket" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -40%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">Premium</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Organic Baseket</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(4.5)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Curated selection of seasonal produce</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 100000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-3">UGX 60000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-3">
+                                <option value="kg">Full basket</option>
+                                <option value="g">half basket</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 - Fresh Carrots -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="4" 
+                     data-name="Fresh Carrots" 
+                     data-price="8000" 
+                     data-description="Locally grown organic carrots"
+                     data-image="./images/1.jpg">
+                    <div class="product-image relative">
+                        <img src="./images/1.jpg" alt="Fresh Carrots" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -10%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Fresh Carrots</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(5.0)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Locally grown organic carrots</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 9000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-4">UGX 8000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-4">
+                                <option value="kg">per kg</option>
+                                <option value="g">per 100g</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+              
+
+                <!-- Product Card 5 - Fresh Cabbage -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="5" 
+                     data-name="Fresh Cabbage" 
+                     data-price="2500" 
+                     data-description="Crispy and fresh green cabbage"
+                     data-image="./images/2.jpg">
+                   <div class="product-image relative">
+                        <img src="./images/2.jpg" alt="Fresh Cabbage" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -20%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Fresh Cabbage</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(4.5)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Crispy and fresh green cabbage</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 2500</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-5">UGX 2000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-5">
+                                <option value="kg">2 pieces</option>
+                                <option value="g">1 piece</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>           
+
+
+                <!-- Product Card 6 - Fresh Onions -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="6" 
+                     data-name="Fresh Onions" 
+                     data-price="7000" 
+                     data-description="Premium quality red onions"
+                     data-image="./images/3.jpg">
+                   <div class="product-image relative">
+                        <img src="./images/3.jpg" alt="Fresh Onions" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -10%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Fresh Onions</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(5.0)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Premium quality red onions</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 8000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-6">UGX 7000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-6">
+                                <option value="kg">per kg</option>
+                                <option value="g">per 100g</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+              
+                <!-- Product Card 7 - Fresh Tomatoes -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="7" 
+                     data-name="Fresh Tomatoes" 
+                     data-price="6000" 
+                     data-description="Juicy and ripe tomatoes"
+                     data-image="./images/tomatoes.jpg">
+                     <div class="product-image relative">
+                        <img src="./images/tomatoes.jpg" alt="Fresh Tomatoes" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -10%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Fresh Tomatoes</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(4.5)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Juicy and ripe tomatoes</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 6000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-7">UGX 6000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-7">
+                                <option value="kg">per kg</option>
+                                <option value="g">per 100g</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 8 - Apples -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="8" 
+                     data-name="Apples" 
+                     data-price="4000" 
+                     data-description="Fresh and crispy apples"
+                     data-image="./images/pexels-josh-hild-1270765-2949140.jpg">
+                     <div class="product-image relative">
+                        <img src="./images/pexels-josh-hild-1270765-2949140.jpg" alt="Fresh Apples" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -20%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Apples</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(5.0)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Fresh and crispy apples</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 10000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-8">UGX 8000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-8">
+                                <option value="kg">per kg</option>
+                                <option value="g">per 100g</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+                <!-- Product Card 9 - Fresh Spinach -->
+                <div class="product-item bg-white rounded-lg shadow-lg p-6 transition-transform duration-300 hover:scale-105" 
+                     data-id="9" 
+                     data-name="Fresh Spinach" 
+                     data-price="3000" 
+                     data-description="Organic leafy green spinach"
+                     data-image="./images/pexels-catscoming-750952.jpg">
+                    <div class="product-image relative">
+                        <img src="./images/pexels-catscoming-750952.jpg" alt="Fresh Spinach" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <div class="product-badges absolute top-2 left-2">
+                            <span class="badge sale bg-red-500 text-white px-2 py-1 rounded">Sale -10%</span>
+                            <span class="badge status bg-green-500 text-white px-2 py-1 rounded">In Stock</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-2">Fresh Spinach</h3>
+                    <div class="product-rating flex items-center mb-2">
+                        <div class="stars text-yellow-500">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="rating-count text-gray-600 ml-2">(3.5)</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Organic leafy green spinach</p>
+                    <div class="product-price mb-4 flex items-center justify-between">
+                        <div class="price-wrapper">
+                            <span class="original-price text-gray-500 line-through">UGX 3000</span>
+                            <span class="price text-green-600 font-bold text-xl ml-2" id="product-price-9">UGX 3000</span>
+                        </div>
+                        <div class="unit-selector ml-4">
+                            <select class="weight-unit border border-gray-300 rounded px-2 py-1" id="unit-selector-9">
+                                <option value="kg">per kg</option>
+                                <option value="g">per 100g</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper flex justify-between items-center">
+                
+                        <button class="add-to-cart bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+                <!-- View All Products Button -->
+                <div class="col-span-full text-center mt-8">
+                    <button onclick="toggleProductsModal()" class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition duration-300 flex items-center mx-auto">
+                        <span class="mr-2">View All Products</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Delivery Information -->
+            <div class="mt-20 bg-green-50 rounded-xl p-8 transition-transform duration-500 transform hover:scale-105" data-aos="fade-up">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center transition-transform duration-300 transform hover:scale-110">
+                        <i class="fas fa-truck text-4xl text-green-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Fast Delivery</h3>
+                        <p class="text-gray-600">Same day delivery for orders before 2 PM</p>
+                    </div>
+                    <div class="text-center transition-transform duration-300 transform hover:scale-110">
+                        <i class="fas fa-shield-alt text-4xl text-green-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Safe Packaging</h3>
+                        <p class="text-gray-600">Carefully packed to maintain freshness</p>
+                    </div>
+                    <div class="text-center transition-transform duration-300 transform hover:scale-110">
+                        <i class="fas fa-medal text-4xl text-green-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Quality Guarantee</h3>
+                        <p class="text-gray-600">100% satisfaction or money back</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FAQ Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="faq-header text-center mb-12">
+                <h2 class="section-title text-4xl font-bold text-gray-800">Frequently Asked Questions</h2>
+                <p class="section-subtitle text-gray-600">Find answers to common questions about our services and products</p>
+            </div>
+            
+            <div class="faq-layout grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div class="faq-column">
+                    <!-- FAQ Item 1 -->
+                    <div class="faq-item bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl mb-6">
+                        <button class="faq-question flex justify-between items-center w-full p-4">
+                            <span class="faq-icon text-green-600">
+                                <i class="fas fa-leaf"></i>
+                            </span>
+                            <div class="faq-question-text flex-1 ml-2">
+                                <h3 class="text-lg font-semibold text-gray-800">How do you ensure product freshness?</h3>
+                                <p class="faq-preview text-gray-600">Learn about our freshness guarantee...</p>
+                            </div>
+                            <span class="faq-toggle text-green-600">
+                                <i class="fas fa-plus transition-transform duration-300"></i>
+                            </span>
+                        </button>
+                        <div class="faq-answer p-4 hidden">
+                            <p>We maintain freshness through:</p>
+                            <ul class="list-disc list-inside text-gray-600">
+                                <li>Direct partnerships with local farmers</li>
+                                <li>Daily morning harvests</li>
+                                <li>Temperature-controlled storage</li>
+                                <li>Same-day delivery system</li>
+                            </ul>
+                            <a href="#" class="faq-learn-more text-green-600 hover:underline">Learn more about our freshness policy →</a>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="faq-item bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl mb-6">
+                        <button class="faq-question flex justify-between items-center w-full p-4">
+                            <span class="faq-icon text-green-600">
+                                <i class="fas fa-truck"></i>
+                            </span>
+                            <div class="faq-question-text flex-1 ml-2">
+                                <h3 class="text-lg font-semibold text-gray-800">Delivery Areas & Times</h3>
+                                <p class="faq-preview text-gray-600">Check our delivery coverage...</p>
+                            </div>
+                            <span class="faq-toggle text-green-600">
+                                <i class="fas fa-plus transition-transform duration-300"></i>
+                            </span>
+                        </button>
+                        <div class="faq-answer p-4 hidden">
+                            <p>Our delivery service covers:</p>
+                            <ul class="list-disc list-inside text-gray-600">
+                                <li>All major areas in Kampala</li>
+                                <li>Delivery hours: 9 AM - 7 PM</li>
+                                <li>Choose your preferred time slot</li>
+                                <li>Real-time delivery tracking</li>
+                            </ul>
+                            <a href="#" class="faq-learn-more text-green-600 hover:underline">View detailed delivery zones →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="faq-column">
+                    <!-- FAQ Item 3 -->
+                    <div class="faq-item bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl mb-6">
+                        <button class="faq-question flex justify-between items-center w-full p-4">
+                            <span class="faq-icon text-green-600">
+                                <i class="fas fa-undo"></i>
+                            </span>
+                            <div class="faq-question-text flex-1 ml-2">
+                                <h3 class="text-lg font-semibold text-gray-800">Returns & Refunds</h3>
+                                <p class="faq-preview text-gray-600">Our customer satisfaction guarantee...</p>
+                            </div>
+                            <span class="faq-toggle text-green-600">
+                                <i class="fas fa-plus transition-transform duration-300"></i>
+                            </span>
+                        </button>
+                        <div class="faq-answer p-4 hidden">
+                            <p>Our return policy includes:</p>
+                            <ul class="list-disc list-inside text-gray-600">
+                                <li>24-hour satisfaction guarantee</li>
+                                <li>No-questions-asked returns</li>
+                                <li>Full refund options</li>
+                                <li>Free replacement delivery</li>
+                            </ul>
+                            <a href="#" class="faq-learn-more text-green-600 hover:underline">Read our full return policy →</a>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="faq-item bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl mb-6">
+                        <button class="faq-question flex justify-between items-center w-full p-4">
+                            <span class="faq-icon text-green-600">
+                                <i class="fas fa-credit-card"></i>
+                            </span>
+                            <div class="faq-question-text flex-1 ml-2">
+                                <h3 class="text-lg font-semibold text-gray-800">Payment Options</h3>
+                                <p class="faq-preview text-gray-600">Multiple secure payment methods...</p>
+                            </div>
+                            <span class="faq-toggle text-green-600">
+                                <i class="fas fa-plus transition-transform duration-300"></i>
+                            </span>
+                        </button>
+                        <div class="faq-answer p-4 hidden">
+                            <p>We accept:</p>
+                            <ul class="list-disc list-inside text-gray-600">
+                                <li>Mobile Money (MTN, Airtel)</li>
+                                <li>Credit/Debit Cards</li>
+                                <li>Cash on Delivery</li>
+                                <li>Bank Transfers</li>
+                            </ul>
+                            <a href="#" class="faq-learn-more text-green-600 hover:underline">View all payment options →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Footer -->
+            <div class="faq-footer text-center mt-12">
+                <p class="text-gray-600">Still have questions?</p>
+                <button class="contact-support-btn bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 flex items-center justify-center mx-auto">
+                    <i class="fas fa-headset mr-2"></i>
+                    Contact Support
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Toggle FAQ answers and rotate the icon
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.classList.toggle('hidden');
+                const toggleIcon = question.querySelector('.faq-toggle i');
+                toggleIcon.classList.toggle('fa-plus');
+                toggleIcon.classList.toggle('fa-minus');
+                toggleIcon.classList.toggle('rotate-180'); // Add rotation class
+            });
+        });
+    </script>
+
+    <section id="customer-reviews" class="py-16 bg-gray-50" data-aos="fade-up">
+        <div class="container mx-auto px-4">
+            <div class="reviews-header text-center mb-12">
+                <h2 class="section-title text-4xl font-bold text-green-600">What Our Customers Say</h2>
+                <p class="section-subtitle text-gray-600">Real experiences from our valued customers</p>
+            </div>
+
+            <div class="reviews-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Review Card 1 -->
+                <div class="review-card bg-white border border-gray-200 rounded-lg shadow-lg p-6 transition-transform duration-300 hover:shadow-xl hover:scale-105" style="min-height: 300px;">
+                    <div class="review-header flex items-center mb-4">
+                        <img src="./images/WhatsApp Image 2024-11-23 at 10.56.28_5acffbf5.jpg" 
+                             alt="Mulindwa Umar" 
+                             class="reviewer-image w-16 h-16 rounded-full border-2 border-green-600 mr-4">
+                        <div class="reviewer-details">
+                            <h4 class="reviewer-name text-lg font-semibold text-gray-800">Mulindwa Umar</h4>
+                            <div class="review-rating flex items-center">
+                                <div class="stars text-yellow-500">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="rating-score text-gray-600 ml-2">4.5</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-quote-right quote-icon text-gray-400 ml-auto"></i>
+                    </div>
+                    <p class="review-text text-gray-700 mb-2">"The quality of the produce is outstanding! Never disappoints with their timely delivery and excellent customer service."</p>
+                    <div class="review-date text-gray-500 flex items-center">
+                        <i class="fas fa-check-circle text-green-600 mr-1"></i>
+                        <span class="text-sm">Verified Purchase - June 2023</span>
+                    </div>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div class="review-card bg-white border border-gray-200 rounded-lg shadow-lg p-6 transition-transform duration-300 hover:shadow-xl hover:scale-105" style="min-height: 300px;">
+                    <div class="review-header flex items-center mb-4">
+                        <img src="./images/WhatsApp Image 2024-11-23 at 13.06.06_af46d291.jpg" 
+                             alt="Nakku Amber" 
+                             class="reviewer-image w-16 h-16 rounded-full border-2 border-green-600 mr-4">
+                        <div class="reviewer-details">
+                            <h4 class="reviewer-name text-lg font-semibold text-gray-800">Nakku Amber</h4>
+                            <div class="review-rating flex items-center">
+                                <div class="stars text-yellow-500">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-score text-gray-600 ml-2">5.0</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-quote-right quote-icon text-gray-400 ml-auto"></i>
+                    </div>
+                    <p class="review-text text-gray-700 mb-2">"I love the variety and freshness of the fruits and vegetables. Highly recommend to everyone!"</p>
+                    <div class="review-date text-gray-500 flex items-center">
+                        <i class="fas fa-check-circle text-green-600 mr-1"></i>
+                        <span class="text-sm">Verified Purchase - July 2023</span>
+                    </div>
+                </div>
+
+                <!-- Review Card 3 -->
+                <div class="review-card bg-white border border-gray-200 rounded-lg shadow-lg p-6 transition-transform duration-300 hover:shadow-xl hover:scale-105" style="min-height: 300px;">
+                    <div class="review-header flex items-center mb-4">
+                        <img src="./images/IMG-20240621-WA0057.jpg" 
+                             alt="Mac Leanan" 
+                             class="reviewer-image w-16 h-16 rounded-full border-2 border-green-600 mr-4">
+                        <div class="reviewer-details">
+                            <h4 class="reviewer-name text-lg font-semibold text-gray-800">Mac Leanan</h4>
+                            <div class="review-rating flex items-center">
+                                <div class="stars text-yellow-500">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-score text-gray-600 ml-2">5.0</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-quote-right quote-icon text-gray-400 ml-auto"></i>
+                    </div>
+                    <p class="review-text text-gray-700 mb-2">"Kim Fresh Fruits organic produce is the best I've ever had. The taste and quality are unmatched!"</p>
+                    <div class="review-date text-gray-500 flex items-center">
+                        <i class="fas fa-check-circle text-green-600 mr-1"></i>
+                        <span class="text-sm">Verified Purchase - August 2023</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-footer text-center mt-8">
+                <button id="view-more-reviews" class="view-more-btn border border-green-600 bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-green-600 hover:text-white transition duration-300 flex items-center justify-center mx-auto" onclick="loadMoreReviews()">
+                    <span>View More Reviews</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    <script>
+        function loadMoreReviews() {
+            const button = document.getElementById('view-more-reviews');
+            button.innerHTML = '<span>Loading Reviews...</span>'; // Change button text
+            button.disabled = true; // Optionally disable the button to prevent multiple clicks
+    
+            // Simulate loading reviews (replace this with actual loading logic)
+            setTimeout(() => {
+                // After loading, you can reset the button text or load reviews
+                button.innerHTML = '<span>View More Reviews</span><i class="fas fa-arrow-right ml-2"></i>';
+                button.disabled = false; // Re-enable the button
+            }, 2000); // Simulate a 2-second loading time
+        }
+    </script>
+
+    <!-- Art of Fruits Section -->
+    <section class="py-16 bg-white" data-aos="fade-up">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-4xl font-bold text-center text-green-600 mb-4">The Art of Fruits</h2>
+    
+                <h3 class="text-center text-lg font-semibold text-green-800">Fresh & Organic Produce</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="prose lg:prose-xl text-center">
+                    <p class="text-gray-700 leading-relaxed text-lg mb-4">
+                        Discover the natural beauty and vibrant colors of fresh fruits. Each piece is carefully selected 
+                        to bring you nature's perfect artwork. From the deep reds of ripe strawberries to the sunny 
+                        yellows of bananas, our fruits are not just food - they're nature's masterpieces.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed text-lg mb-4">
+                        We believe in celebrating the natural elegance of fruits, showcasing their unique patterns, 
+                        textures, and hues. Every fruit tells a story of careful nurturing, perfect ripening, and 
+                        the amazing artistry of nature.
+                    </p>
+                    
+                    <div class="art-features mt-8 flex justify-center space-x-8">
+                        <div class="feature flex items-center bg-white rounded-lg shadow-lg p-4 transition-transform duration-300 hover:shadow-xl hover:scale-105">
+                            <i class="fas fa-palette text-green-600 text-2xl mr-2"></i>
+                            <span class="text-gray-700 font-semibold">Natural Colors</span>
+                        </div>
+                        <div class="feature flex items-center bg-white rounded-lg shadow-lg p-4 transition-transform duration-300 hover:shadow-xl hover:scale-105">
+                            <i class="fas fa-leaf text-green-600 text-2xl mr-2"></i>
+                            <span class="text-gray-700 font-semibold">Organic Beauty</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-105 hover:shadow-xl cursor-pointer" onclick="openModal('./images/pngwing.com (2).png', 'Artistic Fruit Display')">
+                        <img src="./images/pngwing.com (2).png" alt="Artistic Fruit Display" class="w-full h-64 object-cover transition-transform duration-300 transform hover:scale-110 hover:opacity-90">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-105 hover:shadow-xl cursor-pointer" onclick="openModal('./images/pngwing.com (1).png', 'Fruit Arrangement')">
+                        <img src="./images/pngwing.com (1).png" alt="Fruit Arrangement" class="w-full h-64 object-cover transition-transform duration-300 transform hover:scale-110 hover:opacity-90">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-105 hover:shadow-xl cursor-pointer" onclick="openModal('./images/pngwing.com (5).png', 'Colorful Fruits')">
+                        <img src="./images/pngwing.com (5).png" alt="Colorful Fruits" class="w-full h-64 object-cover transition-transform duration-300 transform hover:scale-110 hover:opacity-90">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-105 hover:shadow-xl cursor-pointer" onclick="openModal('./images/pngwing.com (3).png', 'Fruit Pattern')">
+                        <img src="./images/pngwing.com (3).png" alt="Fruit Pattern" class="w-full h-64 object-cover transition-transform duration-300 transform hover:scale-110 hover:opacity-90">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Image Display -->
+    <div id="image-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg p-4 relative shadow-lg">
+            <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <img id="modal-image" src="" alt="" class="w-full h-auto rounded-lg shadow-md">
+            <h3 id="modal-title" class="text-center text-lg font-semibold mt-2 text-green-600"></h3>
+        </div>
+    </div>
+
+    <script>
+        function openModal(imageSrc, title) {
+            document.getElementById('modal-image').src = imageSrc;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('image-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+    </script>
+
+    
+    <section id="about" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8">About Us</h2>
+            
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-center mb-6">
+                            <i class="fas fa-seedling text-5xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-800 text-center mb-4">Our Journey Since 2010</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            AJ Fruits  and Vegetables
+Located at Nakasero Market, Stall 281, AJ Fruits and Vegetables  Supply is your go-to source for premium produce.
+ Founded in 2010 as a family-owned market stall, we have grown into a trusted provider of fresh, farm-to-door fruits and 
+ vegetables. We offer a wide variety of local and imported fruits, including apples, oranges, bananas, grapes, kiwis,
+  and more, as well as an extensive selection of 
+vegetables. With a commitment to quality and convenience, we also provide reliable delivery services countrywide.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            Our founder, Kim Isma, believed in creating a direct bridge 
+                            between local farmers and consumers, ensuring that families have access 
+                            to the freshest, highest-quality produce while supporting sustainable farming practices.
+                        </p>
+
+                    </div>
+                
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8" id="stats-section">
+                            <div class="text-center bg-white p-8 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                                <div class="text-green-600 font-bold text-3xl mb-2" id="years-of-service">0</div>
+                                <p class="text-gray-600">Years of Service</p>
+                            </div>
+                            <div class="text-center bg-white p-8 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                                <div class="text-green-600 font-bold text-3xl mb-2" id="local-farmers">0</div>
+                                <p class="text-gray-600">Local Farmers</p>
+                            </div>
+                            <div class="text-center bg-white p-8 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                                <div class="text-green-600 font-bold text-3xl mb-2" id="happy-customers">0</div>
+                                <p class="text-gray-600">Happy Customers</p>
+                            </div>
+                        </div>
+
+ 
+                  
+
+                <!-- Co-Founders Section -->
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8" data-aos="fade-up">
+                    <!-- Co-Founder 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                        <div class="relative mb-4 overflow-hidden rounded-lg">
+                            <img src="./images/WhatsApp Image 2024-12-02 at 08.31.36_48857a6b.jpg" alt="Kim Isma" 
+                                class="w-full h-64 object-cover rounded-lg transform hover:scale-105 transition-transform duration-500">
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                <h4 class="text-white text-xl font-bold">Kim Isma</h4>
+                                <p class="text-green-400">Co-Founder & CEO</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">
+                            With over 15 years of experience in sustainable agriculture, Kim leads our mission to bring fresh, organic produce to every household.
+                        </p>
+                    </div>
+
+                    <!-- Co-Founder 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                        <div class="relative mb-4 overflow-hidden rounded-lg">
+                            <img src="./images/IMG-20240621-WA0057.jpg" alt="Mac Leanan" 
+                                class="w-full h-64 object-cover rounded-lg transform hover:scale-105 transition-transform duration-500">
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                <h4 class="text-white text-xl font-bold">Mac Leanan</h4>
+                                <p class="text-green-400">Co-Founder & COO</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">
+                            Mac brings his expertise in supply chain management and technology to ensure seamless delivery of fresh produce to our customers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Events and New Products Section -->
+    <section id="events" class="events-arrivals-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Upcoming Events & New Arrivals</h2>
+                <p class="section-subtitle">Discover what's fresh and exciting at FreshMart</p>
+            </div>
+
+            <div class="content-grid grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Events Column -->
+                <div class="events-column">
+                    <h3 class="column-title">Upcoming Events</h3>
+                    <div class="events-list">
+                        <!-- Event 1 -->
+                        <div class="event-card bg-white rounded-lg shadow-lg p-4 transition-transform duration-300 hover:shadow-xl">
+                            <div class="event-icon bg-green-500 text-white rounded-full p-2">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="event-details">
+                                <h4 class="font-bold">Farmer's Market Festival</h4>
+                                <p>Join us for a weekend of fresh produce, cooking demos, and family fun!</p>
+                                <div class="event-date text-gray-600">
+                                    <i class="far fa-clock"></i>
+                                    <span>June 15-16, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Event 2 -->
+                        <div class="event-card bg-white rounded-lg shadow-lg p-4 transition-transform duration-300 hover:shadow-xl">
+                            <div class="event-icon bg-green-500 text-white rounded-full p-2">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="event-details">
+                                <h4 class="font-bold">Organic Cooking Workshop</h4>
+                                <p>Learn to cook healthy meals with our fresh organic ingredients.</p>
+                                <div class="event-date text-gray-600">
+                                    <i class="far fa-clock"></i>
+                                    <span>July 1, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Arrivals Column -->
+                <div class="arrivals-column">
+                    <h3 class="column-title">New Arrivals</h3>
+                    <div class="arrivals-grid grid grid-cols-2 gap-4">
+                        <!-- Arrival 1 -->
+                        <div class="arrival-card">
+                            <div class="arrival-image">
+                                <img src="./images/pexels-jess-vide-5232860.jpg" alt="Dragon Fruit">
+                                <div class="arrival-overlay">
+                                    <h4>Dragon Fruit</h4>
+                                    <p>New Exotic Addition</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Arrival 2 -->
+                        <div class="arrival-card">
+                            <div class="arrival-image">
+                                <img src="./images/pexels-foodie-factor-162291-539431.jpg" alt="Asparagus">
+                                <div class="arrival-overlay">
+                                    <h4>Asparagus</h4>
+                                    <p>Rare Seasonal Variety</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Arrival 3 -->
+                        <div class="arrival-card">
+                            <div class="arrival-image">
+                                <img src="./images/pexels-any-lane-5945717.jpg" alt="Golden Kiwi">
+                                <div class="arrival-overlay">
+                                    <h4>Golden Kiwi</h4>
+                                    <p>Sweet & Tropical</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Arrival 4 -->
+                        <div class="arrival-card">
+                            <div class="arrival-image">
+                                <img src="./images/pexels-planka-24783851.jpg" alt="Rainbow Carrots">
+                                <div class="arrival-overlay">
+                                    <h4>Rainbow Carrots</h4>
+                                    <p>Colorful & Nutritious</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section -->
+    <footer  id="Footer" class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <img src="./images/pngwing.com (5).png" alt="FreshMart Logo" class="h-8 w-8">
+                        <span class="text-2xl font-bold text-green-400">FreshMart</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Your trusted source for fresh, organic produce delivered right to your doorstep.</p>
+                    <div class="space-y-2">
+                        <p class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2 text-green-400"></i>
+                            Tel: +256 759 899 923
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-green-400"></i>
+                            kimisma@gmail.com
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#about" class="text-gray-400 hover:text-green-400 transition duration-300">About Us</a></li>
+                        <li><a href="#Products" class="text-gray-400 hover:text-green-400 transition duration-300">Our Products</a></li>
+                        <li><a href="#OnlineOrdering" class="text-gray-400 hover:text-green-400 transition duration-300">Delivery Info</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-green-400 transition duration-300">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Hours -->
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Business Hours</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li>Monday - Friday: 8:00 AM - 8:00 PM</li>
+                        <li>Saturday: 9:00 AM - 6:00 PM</li>
+                        <li>Sunday: 10:00 AM - 4:00 PM</li>
+                    </ul>
+                </div>
+
+                <!-- Social Media -->
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Connect With Us</h4>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex space-x-3">
+                            <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="hover:text-green-200 transition-all duration-300 transform hover:scale-110">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                        <!-- Opening Hours - Hide on very small screens -->
+                        <span class="hidden md:flex items-center border-l border-green-400 pl-4 whitespace-nowrap">
+                            <i class="far fa-clock mr-2"></i>
+                            <span class="text-sm">Mon - Sat: 8:00 AM - 8:00 PM</span>
+                        </span>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="text-xl font-semibold mb-4">Newsletter</h4>
+                        <div class="flex">
+                            <input type="email" placeholder="Enter your email" class="bg-gray-800 text-white px-4 py-2 rounded-l-lg focus:outline-none">
+                            <button class="bg-green-600 px-4 py-2 rounded-r-lg hover:bg-green-700 transition duration-300">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright and Developer Info -->
+            <div class="border-t border-gray-800 mt-12 pt-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center md:text-left">
+                    <div class="text-gray-400">
+                        <p>&copy; 2024 AJ Fruits and Vegetables. All rights reserved.</p>
+                    </div>
+                    <div class="text-gray-400 md:text-right">
+                        <p>Developed with <i class="fas fa-heart text-red-500"></i> by 
+                            <a href="https://github.com/yourusername" target="_blank" 
+                               class="text-green-400 hover:text-green-300 transition duration-300">
+                                Mac Leanan
+                            </a>
+                        </p>
+                        <p class="text-sm mt-1">
+                            Full Stack Developer
+                            <span class="mx-2">|</span>
+                            <a href="mailto:leananmark@gmail.com" class="hover:text-green-400 transition duration-300">
+                                leananmark@gmail.com
+                            </a>
+                            <span class="mx-2">|</span>
+                            <a href="tel:+256759899923" class="hover:text-green-400 transition duration-300">
+                                +256 759 899 923
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+   
+    <script>
+        const videos = document.querySelectorAll('.video-slide');
+        let currentVideo = 0;
+        let videoInterval;
+        const transitionTime = 5000; // Time in milliseconds (5 seconds)
+
+        function changeVideo(direction) {
+            // Clear existing interval and start a new one
+            clearInterval(videoInterval);
+            startVideoLoop();
+
+            // Hide current video
+            videos[currentVideo].classList.add('hidden');
+            videos[currentVideo].classList.remove('active');
+            videos[currentVideo].pause();
+
+            // Update current video index
+            if (direction === 'next') {
+                currentVideo = (currentVideo + 1) % videos.length;
+            } else {
+                currentVideo = (currentVideo - 1 + videos.length) % videos.length;
+            }
+
+            // Show and play new video
+            videos[currentVideo].classList.remove('hidden');
+            videos[currentVideo].classList.add('active');
+            videos[currentVideo].play();
+        }
+
+        function startVideoLoop() {
+            videoInterval = setInterval(() => {
+                changeVideo('next');
+            }, transitionTime);
+        }
+
+        // Start the video loop when the page loads
+        startVideoLoop();
+
+        // Optional: Pause the loop when hovering over the video section
+        const videoSection = document.querySelector('.video-slider');
+        videoSection.addEventListener('mouseenter', () => {
+            clearInterval(videoInterval);
+        });
+
+        videoSection.addEventListener('mouseleave', () => {
+            startVideoLoop();
+        });
+    </script>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+    </script>
+
+    <!-- Sign Up Modal -->
+    <div id="sign-up-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center p-4" onclick="event.stopPropagation();">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-8 relative">
+                <!-- Close Button -->
+                <button type="button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="toggleSignUpModal()">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+
+                <!-- Sign Up Form -->
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Create Account</h2>
+                    <p class="text-gray-600 mt-2">Join our community today!</p>
+                </div>
+
+                <form id="signup-form" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                        <input type="text" name="fullName" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+                        <input type="email" name="email" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                        <input type="password" name="password" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <p class="text-xs text-gray-500 mt-1">Must be at least 8 characters long</p>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">
+                        Sign up with Email
+                    </button>
+
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <!-- Social Sign Up Options -->
+                    <div class="space-y-3">
+                        <button type="button" onclick="signUpWithGoogle()"
+                                class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+                                 class="w-5 h-5 mr-2" alt="Google logo">
+                            Continue with Google
+                        </button>
+
+                        <button type="button" onclick="signUpWithMicrosoft()"
+                                class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <img src="https://www.microsoft.com/favicon.ico" 
+                                 class="w-5 h-5 mr-2" alt="Microsoft logo">
+                            Continue with Microsoft
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sign Up with Google
+        async function signUpWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await firebase.auth().signInWithPopup(provider);
+                console.log('Google sign up successful:', result);
+                showSuccess('Signed up with Google successfully!');
+                toggleSignUpModal();
+            } catch (error) {
+                console.error('Google sign up error:', error);
+                showError(error.message);
+            }
+        }
+
+        // Sign Up with Microsoft
+        async function signUpWithMicrosoft() {
+            try {
+                const provider = new firebase.auth.OAuthProvider('microsoft.com');
+                provider.setCustomParameters({
+                    tenant: 'user@firstadd.onmicrosoft.com',
+                    prompt: 'select_account'
+                });
+                const result = await firebase.auth().signInWithPopup(provider);
+                console.log('Microsoft sign up successful:', result);
+                showSuccess('Signed up with Microsoft successfully!');
+                toggleSignUpModal();
+            } catch (error) {
+                console.error('Microsoft sign up error:', error);
+                showError(error.message);
+            }
+        }
+
+        // Enhanced Email/Password Sign Up
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = this.querySelector('input[name="fullName"]').value;
+            const email = this.querySelector('input[name="email"]').value;
+            const password = this.querySelector('input[name="password"]').value;
+
+            // Basic validation
+            if (password.length < 8) {
+                showError('Password must be at least 8 characters long');
+                return;
+            }
+
+            try {
+                // Create user with email and password
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                
+                // Update user profile with full name
+                await userCredential.user.updateProfile({
+                    displayName: fullName
+                });
+
+                // Store additional user data in Firestore
+                await firebase.firestore().collection('users').doc(userCredential.user.uid).set({
+                    fullName: fullName,
+                    email: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showSuccess('Account created successfully!');
+                toggleSignUpModal();
+            } catch (error) {
+                console.error('Sign up error:', error);
+                showError(error.message);
+            }
+        });
+
+        // Existing success/error message functions remain the same
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50';
+            successDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                    </svg>
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(successDiv);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50';
+            errorDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
+                    </svg>
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(errorDiv);
+            setTimeout(() => errorDiv.remove(), 3000);
+        }
+    </script>
+
+    <script>
+        // Calculate scrollbar width to prevent content shift
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+
+    // Mobile menu toggle with animation
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            document.body.classList.toggle('mobile-menu-open');
+        });
+
+        // Close menu on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                document.body.classList.remove('mobile-menu-open');
+            }
+        });
+    }
+
+    // Handle modal open/close
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            const isHidden = modal.classList.contains('hidden');
+            modal.classList.toggle('hidden');
+            document.body.classList.toggle('modal-open', !isHidden);
+        }
+    }
+
+    // Add touch event handlers for better mobile experience
+    document.addEventListener('touchstart', function() {}, {passive: true});
+</script>
+
+    <script>
+        const cartItems = [];
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('en-UG', {
+                style: 'currency',
+                currency: 'UGX'
+            }).format(price);
+        }
+
+        function updateCart() {
+            const cartContent = document.getElementById('cart-items');
+            const subtotalElement = document.getElementById('cart-subtotal');
+            
+            if (!cartContent || !subtotalElement) return;
+            
+            cartContent.innerHTML = ''; // Clear existing content
+            
+            // Calculate subtotal
+            const subtotal = cartItems.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
+            
+            console.log('Subtotal calculated:', subtotal); // Debug log
+            
+            // Update subtotal display
+            subtotalElement.textContent = formatPrice(subtotal);
+            
+            // Display cart items
+            cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item border rounded-lg shadow-md p-4 mb-4 transition-transform duration-300 hover:shadow-lg';
+                cartItem.innerHTML = `
+                    <div class="flex flex-col md:flex-row items-center space-x-0 md:space-x-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-24 h-24 object-cover rounded-lg mb-2 md:mb-0">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-800">${item.name}</h3>
+                            <div class="flex items-center justify-between mt-2">
+                                <span class="text-gray-600">${formatPrice(item.price)} × ${item.quantity}</span>
+                                <span class="font-semibold text-gray-800">${formatPrice(itemTotal)}</span>
+                            </div>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <button onclick="changeQuantity('${item.id}', -1)" class="text-gray-500 hover:text-gray-700 transition duration-200">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="text-gray-600">${item.quantity}</span>
+                                <button onclick="changeQuantity('${item.id}', 1)" class="text-gray-500 hover:text-gray-700 transition duration-200">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button onclick="removeFromCart('${item.id}')" class="text-red-500 hover:text-red-700 transition duration-200">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                cartContent.appendChild(cartItem);
+            });
+            
+            // Update cart count
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            const count = cartItems.reduce((total, item) => total + item.quantity, 0);
+            const cartCount = document.getElementById('cart-count');
+            const fabCartCount = document.getElementById('fab-cart-count');
+            
+            // Update both cart count displays
+            if (cartCount) {
+                cartCount.textContent = count;
+                cartCount.classList.toggle('hidden', count ===0);
+            }
+            
+            if (fabCartCount) {
+                fabCartCount.textContent = count;
+                fabCartCount.classList.toggle('hidden', count ===0);
+            }
+        }
+
+        function addToCart(product) {
+            console.log('Adding to cart:', product); // Debug log
+
+            // Check if the product is already in the cart
+            const existingItem = cartItems.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                // If it exists, increase the quantity
+                existingItem.quantity += 1;
+            } else {
+                // If it doesn't exist, add it to the cart with quantity 1
+                product.quantity = 1; // Set initial quantity
+                cartItems.push(product);
+            }
+            
+            updateCart(); // Update the cart display
+            toggleCart(); // Open the cart
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const productElement = this.closest('.product-item');
+                    
+                    if (!productElement) {
+                        console.error('Product element not found');
+                        return;
+                    }
+
+                    const product = {
+                        id: productElement.dataset.id,
+                        name: productElement.dataset.name,
+                        price: parseFloat(productElement.dataset.price), // Original price
+                        description: productElement.dataset.description,
+                        image: productElement.dataset.image
+                    };
+
+                    console.log('Product data:', product); // Debug log
+                    addToCart(product);
+                });
+            });
+        });
+
+        function changeQuantity(productId, change) {
+            const item = cartItems.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                }
+            }
+        } // Added closing brace here
+    
+    
+        
+
+        function removeFromCart(productId) {
+            const index = cartItems.findIndex(item => item.id === productId);
+            if (index !== -1) {
+                cartItems.splice(index, 1);
+                updateCart();
+            }
+        }
+
+        function toggleCart() {
+            const cart = document.getElementById('shopping-cart');
+            const overlay = document.getElementById('cart-overlay');
+            
+            if (cart.classList.contains('translate-x-full')) {
+                cart.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                cart.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+        
+    </script>
+
+    <!-- Sign Up Modal -->
+    <div id="sign-up-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center p-4" onclick="event.stopPropagation();">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-8 relative">
+                <!-- Close Button -->
+                <button type="button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="toggleSignUpModal()">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+
+                <!-- Sign Up Form -->
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Create Account</h2>
+                    <p class="text-gray-600 mt-2">Join our community today!</p>
+                </div>
+
+                <form id="signup-form" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                        <input type="text" name="fullName" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+                        <input type="email" name="email" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                        <input type="password" name="password" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <p class="text-xs text-gray-500 mt-1">Must be at least 8 characters long</p>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">
+                        Sign up with Email
+                    </button>
+
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <!-- Social Sign Up Options -->
+                    <div class="space-y-3">
+                        <button type="button" onclick="signUpWithGoogle()"
+                                class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+                                 class="w-5 h-5 mr-2" alt="Google logo">
+                            Continue with Google
+                        </button>
+
+                        <button type="button" onclick="signUpWithMicrosoft()"
+                                class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <img src="https://www.microsoft.com/favicon.ico" 
+                                 class="w-5 h-5 mr-2" alt="Microsoft logo">
+                            Continue with Microsoft
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Microsoft Authentication Provider
+        const microsoftProvider = new firebase.auth.OAuthProvider('microsoft.com');
+        microsoftProvider.setCustomParameters({
+            // Force re-consent
+            prompt: 'consent',
+            // Target specific email with login hint.
+            login_hint: 'user@firstadd.onmicrosoft.com'
+        });
+
+        // Add these scopes if you need additional info
+        microsoftProvider.addScope('user.read');
+        microsoftProvider.addScope('openid');
+        microsoftProvider.addScope('profile');
+        microsoftProvider.addScope('email');
+
+        // Updated Microsoft Sign In Function
+        async function signUpWithMicrosoft() {
+            try {
+                // Show loading state
+                const button = document.querySelector('button[onclick="signUpWithMicrosoft()"]');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Connecting...';
+                button.disabled = true;
+
+                // Sign in with popup
+                const result = await firebase.auth().signInWithPopup(microsoftProvider);
+                
+                // Get user info
+                const user = result.user;
+                const credential = result.credential;
+                
+                // Store additional user data in Firestore
+                await firebase.firestore().collection('users').doc(user.uid).set({
+                    fullName: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    provider: 'microsoft.com',
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                // Show success message
+                showSuccess('Signed in with Microsoft successfully!');
+                
+                // Close modal
+                toggleSignUpModal();
+
+            } catch (error) {
+                console.error('Microsoft sign in error:', error);
+                
+                // Show specific error messages
+                switch (error.code) {
+                    case 'auth/account-exists-with-different-credential':
+                        showError('An account already exists with this email.');
+                        break;
+                    case 'auth/popup-blocked':
+                        showError('Please enable popups for this website.');
+                        break;
+                    case 'auth/popup-closed-by-user':
+                        showError('Sign in was cancelled.');
+                        break;
+                    default:
+                        showError(error.message);
+                }
+            } finally {
+                // Reset button state
+                const button = document.querySelector('button[onclick="signUpWithMicrosoft()"]');
+                button.innerHTML = `
+                    <img src="https://www.microsoft.com/favicon.ico" class="w-5 h-5 mr-2" alt="Microsoft logo">
+                    Continue with Microsoft
+                `;
+                button.disabled = false;
+            }
+        }
+    </script>
+
+   
+
+    <!-- Add this script right before the closing </body> tag, after your modal HTML -->
+    <script>
+        // Debug flag
+        const DEBUG = true;
+
+        // Get DOM elements
+        const signUpButton = document.getElementById('signup-button');
+        const signUpModal = document.getElementById('sign-up-modal');
+        const closeModalButton = document.querySelector('#sign-up-modal button[onclick="toggleSignUpModal()"]');
+
+        function toggleSignUpModal() {
+            if (DEBUG) console.log('Toggle modal called');
+            
+            if (!signUpModal) {
+                console.error('Modal element not found!');
+                return;
+            }
+
+            // Toggle modal visibility
+            signUpModal.classList.toggle('hidden');
+            
+            // Toggle body scroll
+            document.body.style.overflow = signUpModal.classList.contains('hidden') ? '' : 'hidden';
+            
+            if (DEBUG) console.log('Modal visibility:', !signUpModal.classList.contains('hidden'));
+        }
+
+        // Add click event listener to sign-up button
+        if (signUpButton) {
+            signUpButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (DEBUG) console.log('Sign-up button clicked');
+                toggleSignUpModal();
+            });
+        } else {
+            console.error('Sign-up button not found!');
+        }
+
+        // Add click event listener to close button
+        if (closeModalButton) {
+            closeModalButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (DEBUG) console.log('Close button clicked');
+                toggleSignUpModal();
+            });
+        }
+
+        // Close modal when clicking outside
+        if (signUpModal) {
+            signUpModal.addEventListener('click', (e) => {
+                if (e.target === signUpModal) {
+                    if (DEBUG) console.log('Clicked outside modal');
+                    toggleSignUpModal();
+                }
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && signUpModal && !signUpModal.classList.contains('hidden')) {
+                if (DEBUG) console.log('Escape key pressed');
+                toggleSignUpModal();
+            }
+        });
+
+        // Log initial state for debugging
+        if (DEBUG) {
+            console.log({
+                signUpButton: !!signUpButton,
+                signUpModal: !!signUpModal,
+                closeModalButton: !!closeModalButton
+            });
+        }
+    </script>
+    <button class="floating-button hidden md:block" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="fab-cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+    </button>
+    
+    <style>
+        .floating-button {
+            position: fixed;
+            bottom: 80px;
+            right: 17px;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            border: none; /* No border */
+            border-radius: 50%; /* Circular shape */
+            height: 56px; /* Height of the button */
+            width: 56px; /* Width of the button */
+            display: flex; /* Center icon */
+            align-items: center; /* Center icon vertically */
+            justify-content: center; /* Center icon horizontally */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            transition: background-color 0.3s; /* Smooth background color transition */
+        }
+
+        .floating-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+
+    <!-- Add this bottom navigation bar -->
+    <div class="bottom-nav md:hidden">
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#Products" class="bottom-nav-item">
+            <i class="fas fa-store"></i>
+            <span>Shop</span>
+        </a>
+        <a href="#account" class="bottom-nav-item">
+            <i class="fas fa-user"></i>
+            <span>Account</span>
+        </a>
+    </div>
+
+    <!-- Floating action button for quick actions -->
+    <button class="fab-button md:hidden" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <!-- Optional: Add cart count badge -->
+        <span id="fab-cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+    </button>
+
+    <!-- Add this script for mobile interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sections collapsible on mobile
+            const sections = document.querySelectorAll('.section-collapse');
+            sections.forEach(section => {
+                const header = section.querySelector('.section-header');
+                const content = section.querySelector('.section-content');
+                
+                header.addEventListener('click', () => {
+                    content.classList.toggle('expanded');
+                    header.querySelector('i').classList.toggle('fa-chevron-down');
+                    header.querySelector('i').classList.toggle('fa-chevron-up');
+                });
+            });
+
+            // Handle bottom navigation active states
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+            bottomNavItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    bottomNavItems.forEach(i => i.classList.remove('text-green-600'));
+                    item.classList.add('text-green-600');
+                });
+            });
+
+            // Add scroll behavior
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const bottomNav = document.querySelector('.bottom-nav');
+                const fabButton = document.querySelector('.fab-button');
+                
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    // Scrolling down
+                    bottomNav.style.transform = 'translateY(100%)';
+                    fabButton.style.transform = 'scale(0)';
+                } else {
+                    // Scrolling up
+                    bottomNav.style.transform = 'translateY(0)';
+                    fabButton.style.transform = 'scale(1)';
+                }
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+
+    <script>
+        const originalPrices = {
+            'unit-selector': 6000,
+            'unit-selector-2': 10000,
+            'unit-selector-3': 60000,
+            'unit-selector-4': 8000,
+            'unit-selector-5': 2000,
+            'unit-selector-6': 7000,
+            'unit-selector-7': 6000,
+            'unit-selector-8': 8000,
+            'unit-selector-9': 3000,
+        };
+
+        Object.keys(originalPrices).forEach(selectorId => {
+            document.getElementById(selectorId).addEventListener('change', function() {
+                const priceElement = document.getElementById(`product-price-${selectorId.split('-')[2]}`);
+                let newPrice = originalPrices[selectorId];
+
+                if (this.value === 'g') {
+                    newPrice = newPrice / 2; // Calculate price for 100g
+                }
+
+                priceElement.textContent = `UGX ${newPrice}`;
+            });
+        });
+    </script>
+    
+    <script>
+        function updatePrice() {
+      const unitSelector = document.getElementById('unit-selector');
+      const priceElement = document.getElementById('product-price-1');
+      const originalPrice = 6000; // Original price for 1 kg
+      let newPrice;
+
+      if (unitSelector.value === 'g') {
+          newPrice = (originalPrice / 2).toFixed(2); // Price for 100g (half of 1 kg)
+      } else {
+          newPrice = originalPrice; // Price for 1 kg
+      }
+
+      priceElement.textContent = `UGX ${newPrice}`;
+  }
+</script>
+
+    <!-- Shopping Cart Overlay -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="shopping-cart" class="fixed top-0 right-0 h-full w-96 max-w-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+        <div class="flex flex-col h-full">
+            <!-- Cart Header -->
+            <div class="flex justify-between items-center p-4 border-b">
+                <h2 class="text-xl font-semibold text-gray-800">Your Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items -->
+            <div class="flex-1 overflow-y-auto p-4" id="cart-items">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+
+            <!-- Cart Footer -->
+            <div class="border-t p-4">
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Subtotal:</span>
+                    <span class="font-semibold text-gray-800" id="cart-subtotal">UGX 0</span>
+                </div>
+                <button id="checkout-button" 
+                        onclick="proceedToCheckout()"
+                        class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this script to handle cart functionality -->
+    <script>
+        function toggleCart() {
+            const cart = document.getElementById('shopping-cart');
+            const overlay = document.getElementById('cart-overlay');
+            
+            if (!cart || !overlay) {
+                console.error('Cart elements not found');
+                return;
+            }
+            
+            if (cart.classList.contains('translate-x-full')) {
+                cart.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                cart.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Initialize cart functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event listener to overlay
+            const overlay = document.getElementById('cart-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', toggleCart);
+            }
+
+            // Add ESC key listener
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const cart = document.getElementById('shopping-cart');
+                    if (cart && !cart.classList.contains('translate-x-full')) {
+                        toggleCart();
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+                <!-- Header with close button -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">Payment Details</h2>
+                    <button onclick="togglePaymentModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Payment Method Selection -->
+                <div class="mb-6">
+                    <h3 class="text-gray-700 mb-4">Select Payment Method</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="payment" value="mobile" class="mr-3">
+                            <span class="flex items-center">
+                                <i class="fas fa-mobile-alt text-green-600 mr-2"></i>
+                                Mobile Money
+                            </span>
+                        </label>
+
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="payment" value="card" class="mr-3">
+                            <span class="flex items-center">
+                                <i class="fas fa-credit-card text-green-600 mr-2"></i>
+                                Credit/Debit Card
+                            </span>
+                        </label>
+
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="payment" value="cash" class="mr-3">
+                            <span class="flex items-center">
+                                <i class="fas fa-money-bill text-green-600 mr-2"></i>
+                                Cash on Delivery
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="border-t pt-4 mb-6">
+                    <h3 class="text-gray-700 font-semibold mb-4">Order Summary</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Subtotal:</span>
+                            <span class="text-gray-800" id="modal-subtotal">UGX 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Delivery Fee:</span>
+                            <span class="text-gray-800">UGX 5,000</span>
+                        </div>
+                        <div class="flex justify-between pt-2 border-t font-semibold">
+                            <span>Total:</span>
+                            <span class="text-green-600" id="modal-total">USh 15,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complete Payment Button -->
+                <button onclick="completePayment()" 
+                        class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                    Complete Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updatePaymentModal() {
+            const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const deliveryFee = 5000;
+            const total = subtotal + deliveryFee;
+
+            document.getElementById('modal-subtotal').textContent = `UGX ${subtotal.toLocaleString()}`;
+            document.getElementById('modal-total').textContent = `USh ${total.toLocaleString()}`;
+        }
+
+        function completePayment() {
+            const selectedPayment = document.querySelector('input[name="payment"]:checked');
+            if (!selectedPayment) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            // Handle payment based on selection
+            alert('Processing payment...');
+            // Add your payment processing logic here
+        }
+
+        // Update the existing togglePaymentModal function
+        function togglePaymentModal() {
+            const modal = document.getElementById('payment-modal');
+            if (!modal) return;
+            
+            const isHidden = modal.classList.contains('hidden');
+            modal.classList.toggle('hidden');
+            
+            if (!isHidden) {
+                document.body.style.overflow = '';
+            } else {
+                document.body.style.overflow = 'hidden';
+                updatePaymentModal(); // Update totals when opening modal
+            }
+        }
+    </script>
+
+    <!-- Add this modal after your payment modal -->
+    <div id="all-products-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg w-full max-w-6xl p-6">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center mb-6 border-b pb-4">
+                    <h2 class="text-3xl font-bold text-gray-800">All Products</h2>
+                    <button onclick="toggleProductsModal()" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Search and Filter Section -->
+                <div class="mb-6 flex flex-wrap gap-4">
+                    <div class="flex-1">
+                        <input type="text" 
+                               placeholder="Search products..." 
+                               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500"
+                               id="product-search">
+                    </div>
+                    <select class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="category-filter">
+                        <option value="">All Categories</option>
+                        <option value="fruits">Fruits</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="organic">Organic</option>
+                    </select>
+                    <select class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="sort-filter">
+                        <option value="name">Sort by Name</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="products-grid">
+                    <!-- Product Cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this JavaScript to handle the modal -->
+    <script>
+        // Product data array
+        const allProducts = [
+            
+            {
+                id: 9,
+                name: "Pear",
+                price: 15000,
+                description: "Fresh pears, 1 kg",
+                image: "./images/pexels-marta-dzedyshko-1042863-2067574.jpg",
+                category: "fruits"
+            },
+            {
+                id: 10,
+                name: "Pomegranate",
+                price: 30000,
+                description: "Fresh pomegranate, 1 kg",
+                image: "./images/pexels-enginakyurt-3091381.jpg",
+                category: "fruits"
+            },
+            {
+                id: 11,
+                name: "Blueberries",
+                price: 15000,
+                description: "Fresh blueberries, 1 packet",
+                image: "./images/pexels-dina-nasyrova-2006209-3628062.jpg",
+                category: "fruits"
+            },
+            {
+                id: 12,
+                name: "Organic Bananas",
+                price: 12000,
+                description: "Fresh baby bananas, 1 cluster",
+                image: "./images/pexels-dom-j-7304-365810.jpg",
+                category: "fruits"
+            },
+            {
+                id: 13,
+                name: "Dragon Fruit",
+                price: 30000,
+                description: "Fresh dragon fruit, 1 kg",
+                image: "./images/pexels-jess-vide-5232860.jpg",
+                category: "fruits"
+            },
+            {
+                id: 14,
+                name: "Fresh Greens",
+                price: 12000,
+                description: "Fresh Greens",
+                image: "./images/pexels-cottonbro-3296644.jpg",
+                category: "vegetables"
+            },
+            {
+                id: 15,
+                name: "Fresh Oranges",
+                price: 15000,
+                description: "Juicy and sweet oranges",
+                image: "./images/pngwing.com (3).png",
+                category: "fruits"
+            },
+            {
+                id: 16,
+                name: "Red Grapes",
+                price: 18000,
+                description: "Sweet and seedless red grapes",
+                image: "./images/pexels-qjpioneer-708777.jpg",
+                category: "fruits"
+            },
+            {
+                id: 17,
+                name: "Fresh Strawberries",
+                price: 20000,
+                description: "Sweet and juicy strawberries",
+                image: "./images/pngwing.com (2).png",
+                category: "fruits"
+            },
+            {
+                id: 18,
+                name: "Organic Spinach",
+                price: 6000,
+                description: "Fresh and crispy organic spinach",
+                image: "./images/pexels-catscoming-750952.jpg",
+                category: "vegetables"
+            },
+            {
+                id: 19,
+                name: "Fresh Broccoli",
+                price: 8000,
+                description: "Nutritious and fresh broccoli",
+                image: "./images/pexels-cottonbro-6969266 (1).jpg",
+                category: "vegetables"
+            },
+            {
+                id: 20,
+                name: "Sweet Potatoes",
+                price: 7000,
+                description: "Fresh and sweet potatoes",
+                image: "./images/pexels-marceloverfe-13059602.jpg",
+                category: "vegetables"
+            },
+            {
+                id: 21,
+                name: "Fresh Mushrooms",
+                price: 12000,
+                description: "Organic button mushrooms",
+                image: "./images/pexels-pixabay-51125.jpg",
+                category: "vegetables"
+            },
+            {
+                id: 22,
+                name: "Organic Avocados",
+                price: 15000,
+                description: "Creamy and ripe avocados",
+                image: "./images/pexels-aboodi-17975547.jpg",
+                category: "fruits"
+            },
+            {
+                id: 23,
+                name: "Fresh Lettuce",
+                price: 5000,
+                description: "Crispy and fresh lettuce",
+                image: "./images/pexels-uriel-mont-6280538.jpg",
+                category: "vegetables"
+            },
+            {
+                id: 24,
+                name: "Fresh Cucumber",
+                price: 4000,
+                description: "Cool and crispy cucumbers",
+                image: "./images/pexels-lo-422811-2329440.jpg",
+                category: "vegetables"
+            },
+            {
+                id: 25,
+                name: "Fresh Pineapple",
+                price: 16000,
+                description: "Sweet and juicy pineapple",
+                image: "./images/pexels-psco-137119.jpg",
+                category: "fruits"
+            },
+            {
+                id: 26,
+                name: "Fresh Mangoes",
+                price: 14000,
+                description: "Sweet and ripe mangoes",
+                image: "./images/pexels-victorino-2363345.jpg",
+                category: "fruits"
+            },
+            {
+                id: 27,
+                name: "Fresh Watermelon",
+                price: 20000,
+                description: "Sweet and juicy watermelon",
+                image: "./images/pexels-jana-al-mubaslat-257095383-29611136.jpg",
+                category: "fruits"
+            },
+            {
+                id: 28,
+                name: "Fresh Kiwi",
+                price: 25000,
+                description: "Tangy and sweet kiwi fruit",
+                image: "./images/pexels-any-lane-5945717.jpg",
+                category: "fruits"
+            },
+            {
+                id: 29,
+                name: "Fresh Papaya",
+                price: 12000,
+                description: "Sweet and nutritious papaya",
+                image: "./images/pexels-any-lane-5946068.jpg",
+                category: "fruits"
+            },
+            {
+                id: 30,
+                name: "Fresh Apples",
+                price: 10000,
+                description: "Crisp and juicy apples , per kg",
+                image: "./images/pexels-josh-hild-1270765-2949140.jpg",
+                category: "fruits"
+            },
+            {
+                id: 31,
+                name: "Green Pepper",
+                price: 8000,
+                description: "Fresh and crunchy green peppers , per kg",
+                image: "./images/GreenPepper.jpg",
+                category: "vegetables"
+            },
+            {
+                id: 32,
+                name: "Fresh Onions",
+                price: 5000,
+                description: "Flavorful and aromatic onions , per kg",
+                image: "./images/3.jpg",
+                category: "vegetables"
+            },
+        ];
+
+        function toggleProductsModal() {
+            const modal = document.getElementById('all-products-modal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                renderProducts(allProducts);
+            }
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-lg p-4 transition-transform hover:scale-105 flex flex-col">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">${product.name}</h3>
+                    <p class="text-gray-600 text-sm mb-4">${product.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-green-600 font-bold">UGX ${product.price.toLocaleString()}</span>
+                        <button onclick="addToCart({
+                            id: '${product.id}',
+                            name: '${product.name}',
+                            price: ${product.price},
+                            description: '${product.description}',
+                            image: '${product.image}'
+                        }); toggleCart()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search and filter functionality
+        document.getElementById('product-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const sortFilter = document.getElementById('sort-filter').value;
+            
+            let filteredProducts = allProducts.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) &&
+                (categoryFilter === '' || product.category === categoryFilter)
+            );
+
+            // Sort products
+            filteredProducts.sort((a, b) => {
+                switch(sortFilter) {
+                    case 'price-low':
+                        return a.price - b.price;
+                    case 'price-high':
+                        return b.price - a.price;
+                    default:
+                        return a.name.localeCompare(b.name);
+                }
+            });
+
+            renderProducts(filteredProducts);
+        });
+
+        // Add event listeners for filters
+        document.getElementById('category-filter').addEventListener('change', function() {
+            document.getElementById('product-search').dispatchEvent(new Event('input'));
+        });
+
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            document.getElementById('product-search').dispatchEvent(new Event('input'));
+        });
+
+        // Update the Shop Now button click handler
+        document.querySelector('.hero-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            const productsSection = document.getElementById('Products');
+            if (productsSection) {
+                productsSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    </script>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Collect form data
+            const formData = new FormData(this);
+            const orderData = {};
+            formData.forEach((value, key) => {
+                orderData[key] = value;
+            });
+
+            // Display a confirmation message
+            alert('Thank you for your order! We will process it shortly.');
+
+            // Optionally, send the data to a server
+            // fetch('/submit-order', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(orderData)
+            // }).then(response => response.json())
+            //   .then(data => console.log(data))
+            //   .catch(error => console.error('Error:', error));
+
+            // Reset the form
+            this.reset();
+        });
+    </script>
+
+    <script>
+        // Preloader functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const countdown = document.getElementById('countdown');
+            let timeLeft = 3; // 3 seconds countdown
+
+            // Update countdown every second
+            const timer = setInterval(() => {
+                timeLeft--;
+                countdown.textContent = `${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    preloader.style.opacity = '0';
+                    preloader.style.transition = 'opacity 0.5s ease';
+                    
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 500);
+                }
+            }, 1000);
+
+            // Start with initial countdown display
+            countdown.textContent = `${timeLeft}s`;
+        });
+    </script>
+
+    <!-- Sign-Up Modal -->
+    <div id="sign-up-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center p-4" onclick="event.stopPropagation();">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-8 relative">
+                <!-- Close Button -->
+                <button type="button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="toggleSignUpModal()">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+
+                <!-- Sign Up Form -->
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Create Account</h2>
+                    <p class="text-gray-600 mt-2">Join our community today!</p>
+                </div>
+
+                <form id="signup-form" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                        <input type="text" name="fullName" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+                        <input type="email" name="email" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                        <input type="password" name="password" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <p class="text-xs text-gray-500 mt-1">Must be at least 8 characters long</p>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                        Sign up with Email
+                    </button>
+
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <!-- Social Sign Up Options -->
+                    <div class="space-y-3">
+                        <button type="button" onclick="signUpWithGoogle()"
+                                class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+                                 class="w-5 h-5 mr-2" alt="Google logo">
+                            Continue with Google
+                        </button>
+
+                        <button type="button" onclick="signUpWithMicrosoft()"
+                                class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <img src="https://www.microsoft.com/favicon.ico" 
+                                 class="w-5 h-5 mr-2" alt="Microsoft logo">
+                            Continue with Microsoft
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this script to handle the modal toggle -->
+    <script>
+        function toggleSignUpModal() {
+            const modal = document.getElementById('sign-up-modal');
+            if (modal) {
+                modal.classList.toggle('hidden');
+                // Toggle body scroll
+                if (!modal.classList.contains('hidden')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        // Add click event listener to the sign-up button
+        document.addEventListener('DOMContentLoaded', function() {
+            const signUpButton = document.querySelector('[onclick="toggleSignUpModal()"]');
+            if (signUpButton) {
+                signUpButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleSignUpModal();
+                });
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('sign-up-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                toggleSignUpModal();
+            }
+        });
+    </script>
+
+    <script>
+        // Sign Up Modal Toggle
+        function toggleSignUpModal() {
+            const modal = document.getElementById('sign-up-modal');
+            modal.classList.toggle('hidden');
+            
+            // Toggle body scroll
+            if (!modal.classList.contains('hidden')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('sign-up-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                toggleSignUpModal();
+            }
+        });
+
+        // Google Sign Up Function
+        window.signUpWithGoogle = async function() {
+            try {
+                console.log('Starting Google sign up...');
+                const result = await window.signInWithPopup(window.auth, window.googleProvider);
+                console.log('Google sign up successful:', result);
+                showSuccess('Signed up with Google successfully!');
+                toggleSignUpModal();
+            } catch (error) {
+                console.error('Google sign up error:', error);
+                showError(error.message);
+            }
+        }
+
+        
+        // Sign Up with Microsoft
+        async function signUpWithMicrosoft() {
+            try {
+                const result = await firebase.auth().signInWithPopup(microsoftProvider);
+                console.log('Microsoft sign up successful:', result);
+                showSuccess('Signed up with Microsoft successfully!');
+                toggleSignUpModal();
+            } catch (error) {
+                console.error('Microsoft sign up error:', error);
+                showError(error.message);
+            }
+        }
+
+        // Enhanced Email/Password Sign Up
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = this.querySelector('input[name="fullName"]').value;
+            const email = this.querySelector('input[name="email"]').value;
+            const password = this.querySelector('input[name="password"]').value;
+
+            // Basic validation
+            if (password.length < 8) {
+                showError('Password must be at least 8 characters long');
+                return;
+            }
+
+            try {
+                // Create user with email and password
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                
+                // Update user profile with full name
+                await userCredential.user.updateProfile({
+                    displayName: fullName
+                });
+
+                // Store additional user data in Firestore
+                await firebase.firestore().collection('users').doc(userCredential.user.uid).set({
+                    fullName: fullName,
+                    email: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showSuccess('Account created successfully!');
+                toggleSignUpModal();
+            } catch (error) {
+                console.error('Sign up error:', error);
+                showError(error.message);
+            }
+        });
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50';
+            successDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                    </svg>
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(successDiv);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50';
+            errorDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
+                    </svg>
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(errorDiv);
+            setTimeout(() => errorDiv.remove(), 3000);
+        }
+    </script>
+
+    <script>
+        // Function to handle checkout
+        function proceedToCheckout() {
+            if (cartItems.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // Close cart sidebar
+            toggleCart();
+            
+            // Open payment modal
+            togglePaymentModal();
+        }
+    </script>
+
+    <!-- Account Details Modal -->
+    <div id="account-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">Account Details</h2>
+                    <button onclick="toggleAccountModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- User Info -->
+                <div id="user-info" class="space-y-6">
+                    <!-- Profile Section -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4">
+                            <img id="user-photo" src="./images/default-avatar.png" 
+                                 alt="Profile" 
+                                 class="w-full h-full rounded-full object-cover border-4 border-green-100">
+                        </div>
+                        <h3 id="user-name" class="text-xl font-semibold text-gray-800">Loading...</h3>
+                        <p id="user-email" class="text-gray-600">Loading...</p>
+                    </div>
+
+                    <!-- Account Details -->
+                    <div class="space-y-4 border-t pt-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
+                            <p id="display-name" class="text-gray-800 font-semibold">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Email</label>
+                            <p id="display-email" class="text-gray-800">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Account Type</label>
+                            <p id="account-type" class="text-gray-800">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-1">Member Since</label>
+                            <p id="member-since" class="text-gray-800">Loading...</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3 border-t pt-6">
+                        <button onclick="editProfile()" 
+                                class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            Edit Profile
+                        </button>
+                        <button onclick="signOut()" 
+                                class="w-full border border-red-500 text-red-500 py-2 rounded-lg hover:bg-red-50 transition duration-300">
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Not Signed In State -->
+                <div id="not-signed-in" class="text-center py-8 hidden">
+                    <i class="fas fa-user-circle text-gray-300 text-6xl mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Not Signed In</h3>
+                    <p class="text-gray-600 mb-6">Please sign in to view your account details</p>
+                    <button onclick="toggleSignUpModal()" 
+                            class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update the account nav item to use the modal
+        document.querySelector('a[href="#account"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleAccountModal();
+        });
+
+        function toggleAccountModal() {
+            const modal = document.getElementById('account-modal');
+            const userInfo = document.getElementById('user-info');
+            const notSignedIn = document.getElementById('not-signed-in');
+            
+            if (!modal) return;
+            
+            modal.classList.toggle('hidden');
+            
+            if (!modal.classList.contains('hidden')) {
+                // Check if user is signed in
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        // User is signed in
+                        userInfo.classList.remove('hidden');
+                        notSignedIn.classList.add('hidden');
+                        
+                        // Update user info
+                        updateUserInfo(user);
+                    } else {
+                        // No user is signed in
+                        userInfo.classList.add('hidden');
+                        notSignedIn.classList.remove('hidden');
+                    }
+                });
+            }
+            
+            // Toggle body scroll
+            document.body.style.overflow = modal.classList.contains('hidden') ? '' : 'hidden';
+        }
+
+        function updateUserInfo(user) {
+            // Update profile photo
+            document.getElementById('user-photo').src = user.photoURL || './images/default-avatar.png';
+            
+            // Update name fields
+            document.getElementById('user-name').textContent = user.displayName || 'User';
+            document.getElementById('display-name').textContent = user.displayName || 'Not set';
+            
+            // Update email fields
+            document.getElementById('user-email').textContent = user.email;
+            document.getElementById('display-email').textContent = user.email;
+            
+            // Update account type
+            document.getElementById('account-type').textContent = 
+                user.providerData[0].providerId === 'password' ? 'Email Account' : 'Social Account';
+            
+            // Update member since date
+            const memberSince = new Date(user.metadata.creationTime);
+            document.getElementById('member-since').textContent = 
+                memberSince.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+        }
+
+        function editProfile() {
+            // Add your edit profile logic here
+            alert('Edit profile functionality coming soon!');
+        }
+
+        function signOut() {
+            firebase.auth().signOut().then(() => {
+                toggleAccountModal();
+                alert('Signed out successfully');
+            }).catch((error) => {
+                console.error('Sign out error:', error);
+                alert('Error signing out');
+            });
+        }
+    </script>
+
+    <script>
+        // Function to animate the counting
+        function countUp(element, target, duration) {
+            let start = 0;
+            const increment = target / (duration / 100); // Calculate increment based on duration
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    start = target; // Ensure it doesn't exceed the target
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(start); // Update the displayed number
+            }, 100);
+        }
+
+        // Function to check if the section is in view
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >=0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Function to handle the scroll event
+        function handleScroll() {
+            const statsSection = document.getElementById('stats-section');
+            if (isElementInViewport(statsSection)) {
+                countUp(document.getElementById('years-of-service'), 13, 2000);
+                countUp(document.getElementById('local-farmers'), 50, 2000);
+                countUp(document.getElementById('happy-customers'), 10000, 2000);
+                window.removeEventListener('scroll', handleScroll); // Remove event listener after counting
+            }
+        }
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll);
+    </script>
+
+</body>
+</html>
+
